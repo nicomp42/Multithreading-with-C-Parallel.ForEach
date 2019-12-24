@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿/*
+ * Bill Nicholson
+ * nicholdw@ucmail.uc.edu
+ */
+using System;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+
 
 namespace ParallelForEach {
     class PresidentialAddress {
-        public int ID;
+        public int ID;          // Violates Data Hiding, I know. 
         public String president;
         public String textOfSpeech;
 

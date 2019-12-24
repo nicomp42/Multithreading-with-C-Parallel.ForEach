@@ -1,4 +1,9 @@
-﻿using System;
+﻿/*
+ * Bill Nicholson
+ * nicholdw@ucmail.uc.edu
+ * https://www.kaggle.com/adhok93/presidentialaddress/data
+ */
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -66,7 +71,7 @@ namespace ParallelForEach {
             Console.WriteLine($"Took {sw.ElapsedMilliseconds} milliseconds...");
         }
         /// <summary>
-        /// Count the words in each Presidential Innaugural Address, in parallel
+        /// Count the words in each Presidential Innaugural Address, not in parallel
         /// </summary>
         private static void Demo02WithNoParallelization() {
             Console.WriteLine("Demo02WithNoParallelization...");
