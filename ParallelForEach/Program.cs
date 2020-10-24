@@ -15,11 +15,14 @@ namespace ParallelForEach {
     class Program {
         static void Main(string[] args) {
             // First set of tests, without and with parallelization
-//            Demo01WithNoParallelization();
-//            Demo01();
+            //            Demo01WithNoParallelization();
+            //            Demo01();
 
-            Demo02();
-            Demo02WithNoParallelization();
+            //            Demo02();
+            //            Demo02WithNoParallelization();
+
+            Demo03();
+            Demo03WithNoParallelization();
         }
         /// <summary>
         /// No parllelization to process each element in an integer list.
@@ -90,6 +93,48 @@ namespace ParallelForEach {
                 Console.WriteLine(presidentialAddress.president + " : " + presidentialAddress.CountWords());
             };
             Console.WriteLine($"Took {sw.ElapsedMilliseconds} milliseconds...");
+        }
+        /// <summary>
+        /// No parllelization to process each element in an integer list. We just count from 1 to 100, serially.
+        /// The amount of time this will take to run is computable
+        /// </summary>
+        private static void Demo03WithNoParallelization()
+        {
+            int sum = 0;
+            Console.WriteLine("Demo03WithNoParallelization...");
+            List<int> items = Enumerable.Range(0, 100).ToList();
+            Stopwatch sw = Stopwatch.StartNew();
+            foreach (int item in items)
+            {
+                Thread.Sleep(50);   // For each element in the list we will sleep for .050 seconds
+                //Console.WriteLine(item);
+                sum++;
+            };
+            Console.WriteLine($"Took {sw.ElapsedMilliseconds} milliseconds.");
+            Console.WriteLine("sum = " + sum);
+        }
+        /// <summary>
+        /// A simple use of the Parallel.ForEach construct to process each element in an integer list.
+        /// We count from 1 to 100, paralley. We use a non-thread-safe data type (int)
+        /// We then use an int in a thread-safe manner.
+        /// The amount of time this will take to run is NOT computable
+        /// </summary>
+        private static void Demo03()
+        {
+            int sum1 = 0;
+            int sum2 = 0;
+            Console.WriteLine("Demo 03...");
+            List<int> items = Enumerable.Range(0, 100).ToList();
+            Stopwatch sw = Stopwatch.StartNew();
+            Parallel.ForEach(items, (item) => {
+                Thread.Sleep(50);   // For each element in the list we will sleep for .050 seconds
+                //Console.WriteLine(item);
+                sum1++;                                 // This does not work!
+                Interlocked.Increment(ref sum2);        // This works!
+            });
+            Console.WriteLine($"Took {sw.ElapsedMilliseconds} milliseconds...");
+            Console.WriteLine("sum1 incremented NOT thread-safe = " + sum1);
+            Console.WriteLine("sum2 incremented thread-safe = " + sum2);
         }
     }
 }
